@@ -1,0 +1,670 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes, viewport-fit=cover">
+  <title>App do Serralheiro PRO | Tela Cheia</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+      background: radial-gradient(circle at 20% 30%, #1a0a2e, #0a0a1a);
+      min-height: 100vh;
+      padding: 0;
+      margin: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: 
+        repeating-linear-gradient(90deg, rgba(255,215,0,0.05) 0px, rgba(255,215,0,0.05) 1px, transparent 1px, transparent 8px),
+        radial-gradient(ellipse at 50% 50%, rgba(30,20,50,0.8), rgba(10,5,20,0.95));
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .app-container {
+      width: 100%;
+      max-width: 100%;
+      margin: 0;
+      padding: 4px 6px 8px 6px;
+      position: relative;
+      z-index: 2;
+      background: transparent;
+    }
+
+    .main-header {
+      text-align: center;
+      margin-bottom: 4px;
+      padding: 0 4px;
+    }
+
+    h2 {
+      font-weight: 800;
+      font-size: 1.2rem;
+      background: linear-gradient(135deg, #FFD700, #FFA500);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      letter-spacing: 0.5px;
+    }
+
+    .subtitle {
+      text-align: center;
+      color: rgba(255,215,0,0.7);
+      font-size: 0.5rem;
+      margin-bottom: 5px;
+      letter-spacing: 1px;
+    }
+
+    .menu {
+      display: flex;
+      gap: 5px;
+      justify-content: center;
+      margin-bottom: 6px;
+      flex-wrap: wrap;
+      padding: 0 2px;
+    }
+
+    .menu button {
+      flex: 1;
+      min-width: 70px;
+      background: linear-gradient(145deg, #3a3a50, #1a1a30);
+      border: none;
+      padding: 6px 4px;
+      border-radius: 30px;
+      color: #FFD700;
+      font-weight: bold;
+      font-size: 0.65rem;
+      cursor: pointer;
+      box-shadow: 0 3px 0 #0a0a15;
+      transition: 0.05s linear;
+      text-transform: uppercase;
+    }
+    .menu button:active { transform: translateY(2px); box-shadow: 0 1px 0 #0a0a15; }
+
+    .card {
+      background: rgba(12, 18, 28, 0.92);
+      backdrop-filter: blur(10px);
+      border-radius: 16px;
+      padding: 10px 12px;
+      margin-bottom: 8px;
+      box-shadow: 0 8px 16px -8px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.05), 0 0 0 1px rgba(255,215,0,0.15);
+    }
+
+    .card h3 {
+      font-size: 0.9rem;
+      font-weight: 700;
+      margin-bottom: 6px;
+      color: #FFD700;
+      border-left: 3px solid #FFD700;
+      padding-left: 8px;
+    }
+
+    .glass-input {
+      width: 100%;
+      padding: 7px 10px;
+      margin: 4px 0;
+      background: rgba(5, 10, 20, 0.95);
+      border: 1px solid rgba(255,215,0,0.3);
+      border-radius: 30px;
+      font-size: 0.8rem;
+      color: #FFE8C0;
+      outline: none;
+    }
+    .glass-input:focus { border-color: #FFD700; }
+
+    .input-label {
+      font-size: 0.55rem;
+      color: #FFD700;
+      margin-left: 10px;
+      margin-top: 2px;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      font-weight: 600;
+    }
+
+    .toggleRow {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin: 6px 0 2px;
+    }
+    .toggleLabel { color: #ccc; font-size: 0.65rem; }
+    .switch {
+      width: 40px;
+      height: 20px;
+      background: #333;
+      border-radius: 30px;
+      position: relative;
+      cursor: pointer;
+    }
+    .switch::before {
+      content: "";
+      width: 16px;
+      height: 16px;
+      background: #ffd700;
+      border-radius: 50%;
+      position: absolute;
+      top: 2px;
+      left: 2px;
+      transition: 0.15s;
+    }
+    .switch.active::before { transform: translateX(18px); background: #00ff88; }
+
+    .flex-btns {
+      display: flex;
+      gap: 6px;
+      margin: 8px 0 4px;
+      justify-content: center;
+    }
+
+    .btn-elevated {
+      background: linear-gradient(145deg, #3a3a52, #1a1a32);
+      border: none;
+      padding: 5px 10px;
+      border-radius: 30px;
+      font-weight: 700;
+      font-size: 0.6rem;
+      color: #FFD700;
+      cursor: pointer;
+      box-shadow: 0 3px 0 #0a0a18;
+      transition: 0.05s linear;
+      text-transform: uppercase;
+      min-width: 90px;
+    }
+    .btn-elevated:active { transform: translateY(2px); box-shadow: 0 1px 0 #0a0a18; }
+    .btn-success { background: linear-gradient(145deg, #8B6914, #6B4E0A); box-shadow: 0 3px 0 #4a3508; }
+    .btn-outline-light { background: linear-gradient(145deg, #2a2a42, #151530); border: 1px solid rgba(255,215,0,0.2); }
+
+    .clear-history-btn {
+      background: linear-gradient(145deg, #8B1A1A, #6B0E0E);
+      box-shadow: 0 3px 0 #4a0808;
+      border: none;
+      padding: 4px 10px;
+      border-radius: 30px;
+      font-weight: 700;
+      font-size: 0.55rem;
+      color: #FFD700;
+      cursor: pointer;
+      margin-top: 5px;
+      width: 100%;
+    }
+    .clear-history-btn:active { transform: translateY(2px); box-shadow: 0 1px 0 #4a0808; }
+
+    .display-panel {
+      background: #0a0f1a;
+      border-radius: 12px;
+      padding: 8px 10px;
+      margin-top: 6px;
+      border: 1px solid rgba(0, 255, 255, 0.2);
+      position: relative;
+      overflow: hidden;
+    }
+    .display-panel::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(0, 255, 255, 0.08), transparent);
+      animation: scan 4s infinite;
+    }
+    @keyframes scan {
+      0% { left: -100%; }
+      100% { left: 100%; }
+    }
+    .display-line {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      padding: 4px 0;
+      border-bottom: 1px dashed rgba(0, 255, 255, 0.15);
+      font-size: 0.7rem;
+    }
+    .display-line:last-child { border-bottom: none; }
+    .display-label { color: #00ffff; font-weight: 600; }
+    .display-value { color: #ffd700; font-weight: 800; background: rgba(0,0,0,0.4); padding: 2px 6px; border-radius: 20px; font-size: 0.7rem; }
+    .display-title {
+      text-align: center;
+      color: #00ffff;
+      font-size: 0.5rem;
+      letter-spacing: 2px;
+      margin-bottom: 5px;
+    }
+
+    .graph-container {
+      margin-top: 6px;
+      padding: 6px;
+      background: rgba(0,0,0,0.3);
+      border-radius: 10px;
+    }
+    .graph-bar {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      margin: 3px 0;
+    }
+    .graph-label {
+      width: 50px;
+      font-size: 8px;
+      color: #FFD700;
+      font-weight: bold;
+    }
+    .graph-fill {
+      height: 18px;
+      background: linear-gradient(90deg, #ff6b6b, #ffa502, #ffd700);
+      border-radius: 9px;
+      transition: width 0.2s;
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      padding-right: 5px;
+      color: white;
+      font-size: 7px;
+      font-weight: bold;
+    }
+
+    .history {
+      max-height: 90px;
+      overflow: auto;
+      margin-top: 5px;
+      background: rgba(0,0,0,0.5);
+      border-radius: 10px;
+      padding: 5px;
+      font-size: 8px;
+    }
+    .history div { padding: 3px; border-bottom: 1px solid rgba(0,255,255,0.15); color: #0ff; }
+    .hidden { display: none; }
+
+    /* MEDIDOR ANALÓGICO */
+    .gauge-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin: 3px 0;
+    }
+    .analog-gauge {
+      position: relative;
+      width: 140px;
+      height: 140px;
+      margin: 3px auto;
+    }
+    .gauge-svg { transform: rotate(-90deg); }
+    .gauge-bg-circle { fill: none; stroke: #2a2a3a; stroke-width: 12; }
+    .gauge-fill-circle { fill: none; stroke: url(#gaugeGradient); stroke-width: 12; stroke-linecap: round; transition: stroke-dashoffset 0.08s linear; }
+    .gauge-pointer {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%) rotate(0deg);
+      width: 5px;
+      height: 55px;
+      background: linear-gradient(180deg, #ffd700, #ff6b6b);
+      border-radius: 3px;
+      transform-origin: bottom center;
+      transition: transform 0.08s linear;
+    }
+    .gauge-pointer::before {
+      content: "";
+      position: absolute;
+      bottom: -4px;
+      left: -5px;
+      width: 14px;
+      height: 14px;
+      background: radial-gradient(circle, #ffd700, #ffa500);
+      border-radius: 50%;
+    }
+    .gauge-center {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 18px;
+      height: 18px;
+      background: radial-gradient(circle, #ffd700, #b8860b);
+      border-radius: 50%;
+      z-index: 3;
+    }
+    #level {
+      font-size: 1.2rem;
+      text-align: center;
+      font-weight: bold;
+      background: linear-gradient(135deg, #FFD700, #FF6B6B);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      margin: 2px 0;
+    }
+    .level-status {
+      text-align: center;
+      font-size: 0.55rem;
+      margin-top: 2px;
+    }
+
+    ::-webkit-scrollbar { width: 3px; }
+    ::-webkit-scrollbar-track { background: rgba(0,0,0,0.3); border-radius: 10px; }
+    ::-webkit-scrollbar-thumb { background: #FFD700; border-radius: 10px; }
+  </style>
+</head>
+<body>
+<div class="app-container">
+  <div class="main-header">
+    <h2>🔨 SERRALHEIRO PRO</h2>
+    <div class="subtitle">⚡ Circunferência | Medição ABC | Conversor | Nível</div>
+  </div>
+
+  <div class="menu">
+    <button onclick="showSection('circunferencia')">📏 Circ</button>
+    <button onclick="showSection('pontos')">📐 ABC</button>
+    <button onclick="showSection('conversor')">🔄 Conv</button>
+    <button onclick="showSection('nivel')">🎚️ Nível</button>
+  </div>
+
+  <!-- CIRCUNFERÊNCIA -->
+  <div id="circunferencia" class="card">
+    <h3>📏 Circunferência</h3>
+    <div class="input-label">🔹 Diâmetro (mm)</div>
+    <input type="number" id="diametro" class="glass-input" placeholder="Ex: 100" step="any" value="100">
+    <div class="toggleRow">
+      <span class="toggleLabel">π real (3.1416)</span>
+      <div class="switch active" id="switchPi"></div>
+    </div>
+    <div class="display-panel">
+      <div class="display-title">═══ RESULTADO ═══</div>
+      <div class="display-line"><span class="display-label">📏 Comp.</span><span class="display-value" id="circMM">314.16 mm</span></div>
+      <div class="display-line"><span class="display-label">📐 Equiv.</span><span class="display-value" id="circM">0.314 m</span></div>
+    </div>
+  </div>
+
+  <!-- MEDIÇÃO ABC -->
+  <div id="pontos" class="card hidden">
+    <h3>📐 Medição (A, B, C)</h3>
+    <div class="input-label">🔹 Ponto A (mm)</div>
+    <input type="number" id="pontoA" class="glass-input" placeholder="Início" step="any">
+    <div class="input-label">📏 Ponto B (base mm)</div>
+    <input type="number" id="pontoB" class="glass-input" placeholder="Base" step="any">
+    <div class="input-label">📐 Ponto C (altura mm)</div>
+    <input type="number" id="alturaBC" class="glass-input" placeholder="Desnível" step="any">
+    <div class="flex-btns">
+      <button class="btn-elevated btn-success" onclick="saveMeasurement()">💾 Salvar</button>
+      <button class="btn-elevated btn-outline-light" onclick="toggleHistory()">📜 Hist</button>
+    </div>
+    <div id="resultadoPontos" class="display-panel">
+      <div class="display-title">═══ DISPLAY ═══</div>
+      <div style="text-align:center; color:#0ff8; font-size:0.65rem;">⏻ Aguardando...</div>
+    </div>
+    <div id="graficoVisual" class="graph-container"></div>
+    <div id="historico" class="history hidden"></div>
+    <button id="clearHistoryBtn" class="clear-history-btn hidden" onclick="clearHistory()">🗑️ LIMPAR</button>
+  </div>
+
+  <!-- CONVERSOR -->
+  <div id="conversor" class="card hidden">
+    <h3>🔄 Conversor</h3>
+    <div class="input-label">📏 mm → polegadas</div>
+    <input type="number" id="mm" class="glass-input" placeholder="Digite mm" step="any">
+    <button class="btn-elevated" onclick="mmToInch()">Converter</button>
+    <div id="resultadoMM" class="display-panel">
+      <div class="display-title">═══ MM → IN ═══</div>
+      <div style="text-align:center; color:#0ff8;">—</div>
+    </div>
+    <div class="input-label" style="margin-top:5px;">📏 in → mm</div>
+    <input type="number" id="polegadas" class="glass-input" placeholder="Digite polegadas" step="any">
+    <button class="btn-elevated" onclick="inchToMm()">Converter</button>
+    <div id="resultadoPol" class="display-panel">
+      <div class="display-title">═══ IN → MM ═══</div>
+      <div style="text-align:center; color:#0ff8;">—</div>
+    </div>
+  </div>
+
+  <!-- NÍVEL ANALÓGICO -->
+  <div id="nivel" class="card hidden">
+    <h3>🎚️ Nível Analógico</h3>
+    <div class="gauge-container">
+      <div class="analog-gauge" id="analogGauge">
+        <svg class="gauge-svg" width="140" height="140" viewBox="0 0 140 140">
+          <defs>
+            <linearGradient id="gaugeGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+              <stop offset="0%" style="stop-color:#00ff88" />
+              <stop offset="50%" style="stop-color:#ffd700" />
+              <stop offset="100%" style="stop-color:#ff4444" />
+            </linearGradient>
+          </defs>
+          <circle cx="70" cy="70" r="58" class="gauge-bg-circle" />
+          <circle cx="70" cy="70" r="58" class="gauge-fill-circle" id="gaugeFill" />
+        </svg>
+        <div class="gauge-pointer" id="gaugePointer"></div>
+        <div class="gauge-center"></div>
+      </div>
+      <div id="level">0.0°</div>
+      <div class="level-status" id="levelStatus">📐 Nivelado</div>
+    </div>
+    <div class="display-panel" style="text-align:center; font-size:0.55rem; margin-top:4px;">
+      <div class="display-title">═══ SENSOR ═══</div>
+      📱 Incline o dispositivo
+    </div>
+  </div>
+</div>
+
+<script>
+// ELEMENTOS
+const pontosDiv = document.getElementById('pontos');
+const conversorDiv = document.getElementById('conversor');
+const nivelDiv = document.getElementById('nivel');
+const circunferenciaDiv = document.getElementById('circunferencia');
+const pontoA = document.getElementById('pontoA');
+const pontoB = document.getElementById('pontoB');
+const alturaBC = document.getElementById('alturaBC');
+const resultadoPontos = document.getElementById('resultadoPontos');
+const historicoDiv = document.getElementById('historico');
+const graficoVisual = document.getElementById('graficoVisual');
+const clearHistoryBtn = document.getElementById('clearHistoryBtn');
+
+// CIRCUNFERÊNCIA
+let usarPiReal = true;
+const diametroInput = document.getElementById('diametro');
+const circMM = document.getElementById('circMM');
+const circM = document.getElementById('circM');
+const switchPi = document.getElementById('switchPi');
+switchPi.addEventListener('click', () => {
+  usarPiReal = !usarPiReal;
+  switchPi.classList.toggle('active');
+  calcularCircunferencia();
+});
+diametroInput.addEventListener('input', calcularCircunferencia);
+function calcularCircunferencia() {
+  let d = parseFloat(diametroInput.value);
+  if (isNaN(d) || d <= 0) {
+    circMM.innerHTML = "0 mm";
+    circM.innerHTML = "0.000 m";
+    return;
+  }
+  let pi = usarPiReal ? 3.1416 : 3.14;
+  let c = d * pi;
+  circMM.innerHTML = c.toFixed(2) + " mm";
+  circM.innerHTML = (c / 1000).toFixed(3) + " m";
+}
+calcularCircunferencia();
+
+// GRÁFICO
+function drawGraph(A, B, altura, hipotenusa, comprimentoTotal) {
+  const maxVal = Math.max(B, altura, hipotenusa, comprimentoTotal, A || 0);
+  if (maxVal === 0) return;
+  graficoVisual.innerHTML = `
+    <div style="margin-bottom:4px; color:#FFD700; font-size:8px; text-align:center;">📊 Comparativo (mm)</div>
+    ${A ? `<div class="graph-bar"><div class="graph-label">📌 A</div><div class="graph-fill" style="width:${(A/maxVal)*100}%">${A.toFixed(0)}</div></div>` : ''}
+    <div class="graph-bar"><div class="graph-label">📏 B</div><div class="graph-fill" style="width:${(B/maxVal)*100}%">${B.toFixed(0)}</div></div>
+    <div class="graph-bar"><div class="graph-label">📐 C</div><div class="graph-fill" style="width:${(altura/maxVal)*100}%">${altura.toFixed(0)}</div></div>
+    <div class="graph-bar"><div class="graph-label">🔺 Hip</div><div class="graph-fill" style="width:${(hipotenusa/maxVal)*100}%">${hipotenusa.toFixed(0)}</div></div>
+    <div class="graph-bar"><div class="graph-label">🧱 Total</div><div class="graph-fill" style="width:${(comprimentoTotal/maxVal)*100}%">${comprimentoTotal.toFixed(0)}</div></div>
+  `;
+}
+
+// MEDIÇÃO ABC
+function computeAndUpdate() {
+  let A = parseFloat(pontoA.value);
+  let B = parseFloat(pontoB.value);
+  let altura = parseFloat(alturaBC.value);
+  let validA = !isNaN(A);
+  let validB = !isNaN(B) && B !== 0;
+  let validAlt = !isNaN(altura);
+  if (!validB) {
+    resultadoPontos.innerHTML = `<div class="display-title">═══ DISPLAY ═══</div><div style="text-align:center; color:#ff6666;">⚠️ Base B é obrigatória</div>`;
+    graficoVisual.innerHTML = ''; return;
+  }
+  if (!validAlt) {
+    resultadoPontos.innerHTML = `<div class="display-title">═══ DISPLAY ═══</div><div style="text-align:center; color:#ffaa66;">📏 Insira altura C</div>`;
+    graficoVisual.innerHTML = ''; return;
+  }
+  let anguloDeg = Math.atan(altura / B) * 180 / Math.PI;
+  let hipotenusa = Math.sqrt(B*B + altura*altura);
+  let comprimentoTotal = (validA ? A : 0) + hipotenusa;
+  drawGraph(validA ? A : 0, B, altura, hipotenusa, comprimentoTotal);
+  resultadoPontos.innerHTML = `
+    <div class="display-title">═══ DISPLAY ═══</div>
+    <div class="display-line"><span class="display-label">📏 A</span><span class="display-value">${validA ? A.toFixed(1)+' mm' : '—'}</span></div>
+    <div class="display-line"><span class="display-label">📐 B</span><span class="display-value">${B.toFixed(2)} mm</span></div>
+    <div class="display-line"><span class="display-label">📏 C</span><span class="display-value">${altura.toFixed(2)} mm</span></div>
+    <div class="display-line"><span class="display-label">🔺 Ângulo</span><span class="display-value">${anguloDeg.toFixed(1)}°</span></div>
+    <div class="display-line"><span class="display-label">📐 Hipotenusa</span><span class="display-value">${hipotenusa.toFixed(1)} mm</span></div>
+    <div class="display-line"><span class="display-label">🧱 Total</span><span class="display-value">${comprimentoTotal.toFixed(1)} mm</span></div>
+    <div class="display-line"><span class="display-label">➕ Aumento</span><span class="display-value">+${hipotenusa.toFixed(1)} mm</span></div>
+  `;
+}
+[pontoA, pontoB, alturaBC].forEach(i => i?.addEventListener('input', computeAndUpdate));
+
+// HISTÓRICO
+function saveMeasurement() {
+  let A = parseFloat(pontoA.value);
+  let B = parseFloat(pontoB.value);
+  let altura = parseFloat(alturaBC.value);
+  if (isNaN(B) || isNaN(altura) || B === 0) { alert("Preencha B e C"); return; }
+  let ang = Math.atan(altura/B)*180/Math.PI;
+  let hip = Math.sqrt(B*B+altura*altura);
+  let comp = (isNaN(A)?0:A)+hip;
+  let entry = `[${new Date().toLocaleTimeString()}] A:${isNaN(A)?'—':A.toFixed(0)} B:${B.toFixed(0)} C:${altura.toFixed(0)} ∠${ang.toFixed(0)}° Total:${comp.toFixed(0)}mm`;
+  let stored = JSON.parse(localStorage.getItem('serralheiro_history')||'[]');
+  stored.unshift(entry);
+  if(stored.length>12) stored.pop();
+  localStorage.setItem('serralheiro_history',JSON.stringify(stored));
+  alert("✅ Salvo!");
+  renderHistoryList();
+}
+function renderHistoryList() {
+  let stored = JSON.parse(localStorage.getItem('serralheiro_history')||'[]');
+  if(!historicoDiv) return;
+  if(stored.length===0){
+    historicoDiv.innerHTML='<div style="text-align:center;">📭 Vazio</div>';
+    clearHistoryBtn.classList.add('hidden');
+  } else {
+    historicoDiv.innerHTML=stored.map(i=>`<div>🔨 ${i}</div>`).join('');
+    clearHistoryBtn.classList.remove('hidden');
+  }
+}
+function toggleHistory() {
+  if(historicoDiv.classList.contains('hidden')){
+    renderHistoryList();
+    historicoDiv.classList.remove('hidden');
+  } else { historicoDiv.classList.add('hidden'); }
+}
+function clearHistory() {
+  if(confirm("Limpar histórico?")){
+    localStorage.removeItem('serralheiro_history');
+    renderHistoryList();
+    if(!historicoDiv.classList.contains('hidden')) historicoDiv.innerHTML='<div style="text-align:center;">📭 Vazio</div>';
+    alert("🗑️ Limpo!");
+  }
+}
+
+// CONVERSÕES
+function mmToInch(){
+  let v=parseFloat(document.getElementById('mm').value);
+  if(isNaN(v)){ document.getElementById('resultadoMM').innerHTML=`<div class="display-title">═══ MM → IN ═══</div><div style="text-align:center;">⚠️ Digite mm</div>`; return; }
+  document.getElementById('resultadoMM').innerHTML=`<div class="display-title">═══ MM → IN ═══</div><div class="display-line"><span class="display-label">📏 mm</span><span class="display-value">${v.toFixed(2)} mm</span></div><div class="display-line"><span class="display-label">📐 in</span><span class="display-value">${(v/25.4).toFixed(4)} in</span></div>`;
+}
+function inchToMm(){
+  let v=parseFloat(document.getElementById('polegadas').value);
+  if(isNaN(v)){ document.getElementById('resultadoPol').innerHTML=`<div class="display-title">═══ IN → MM ═══</div><div style="text-align:center;">⚠️ Digite in</div>`; return; }
+  document.getElementById('resultadoPol').innerHTML=`<div class="display-title">═══ IN → MM ═══</div><div class="display-line"><span class="display-label">📏 in</span><span class="display-value">${v.toFixed(4)} in</span></div><div class="display-line"><span class="display-label">📐 mm</span><span class="display-value">${(v*25.4).toFixed(2)} mm</span></div>`;
+}
+
+// NÍVEL ANALÓGICO
+let levelEl = document.getElementById('level');
+let gaugeFill = document.getElementById('gaugeFill');
+let gaugePointer = document.getElementById('gaugePointer');
+let levelStatusSpan = document.getElementById('levelStatus');
+const circ = 2 * Math.PI * 58;
+gaugeFill.style.strokeDasharray = circ;
+function updateAnalog(angle){
+  let a = Math.min(90,Math.max(-90,angle));
+  let pAngle = (a/90)*135;
+  gaugePointer.style.transform = `translate(-50%,-50%) rotate(${pAngle}deg)`;
+  let percent = (a+90)/180;
+  gaugeFill.style.strokeDashoffset = circ * (1-percent);
+  levelEl.innerHTML = `${a.toFixed(1)}°`;
+  if(Math.abs(a)<1.5) levelStatusSpan.innerHTML = "✅ Nivelado";
+  else if(Math.abs(a)<5) levelStatusSpan.innerHTML = `📐 ${a.toFixed(1)}° suave`;
+  else if(Math.abs(a)<15) levelStatusSpan.innerHTML = `⚠️ ${a.toFixed(1)}° moderado`;
+  else levelStatusSpan.innerHTML = `🔻 ${a.toFixed(1)}° acentuado`;
+}
+function handleOrientation(e){
+  if(e.beta!==null && e.beta!==undefined) updateAnalog(e.beta);
+}
+if(window.DeviceOrientationEvent){
+  if(typeof DeviceOrientationEvent.requestPermission === 'function'){
+    const nCard = document.getElementById('nivel');
+    if(nCard && !nCard.querySelector('.sensor-btn')){
+      const btn = document.createElement('button');
+      btn.innerText = '🎯 Ativar Sensor';
+      btn.className = 'btn-elevated';
+      btn.style.marginTop = '6px';
+      btn.style.width = '100%';
+      btn.onclick = () => {
+        DeviceOrientationEvent.requestPermission()
+          .then(s => { if(s==='granted'){ window.addEventListener('deviceorientation',handleOrientation); btn.remove(); } else alert('Permissão negada'); })
+          .catch(console.error);
+      };
+      nCard.appendChild(btn);
+    } else window.addEventListener('deviceorientation',handleOrientation);
+  } else window.addEventListener('deviceorientation',handleOrientation);
+}
+updateAnalog(0);
+
+// NAVEGAÇÃO
+function showSection(s){
+  pontosDiv.classList.add('hidden');
+  conversorDiv.classList.add('hidden');
+  nivelDiv.classList.add('hidden');
+  circunferenciaDiv.classList.add('hidden');
+  document.getElementById(s).classList.remove('hidden');
+  if(s==='pontos') computeAndUpdate();
+}
+window.onload = ()=>{ computeAndUpdate(); renderHistoryList(); };
+window.showSection=showSection;
+window.saveMeasurement=saveMeasurement;
+window.toggleHistory=toggleHistory;
+window.clearHistory=clearHistory;
+window.mmToInch=mmToInch;
+window.inchToMm=inchToMm;
+</script>
+</body>
+</html>
